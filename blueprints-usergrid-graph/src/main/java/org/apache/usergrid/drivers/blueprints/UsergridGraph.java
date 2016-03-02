@@ -13,8 +13,10 @@ import org.apache.usergrid.java.client.query.UsergridQuery;
 import org.apache.usergrid.java.client.response.UsergridResponse;
 
 import java.io.IOException;
+import java.rmi.server.ExportException;
 import java.util.*;
 import org.apache.log4j.Logger;
+import org.apache.usergrid.java.client.utils.JsonUtils;
 
 import javax.ws.rs.NotAuthorizedException;
 
@@ -415,7 +417,18 @@ public class UsergridGraph implements Graph {
 
             }
 
-            qString = "select * where name = " + StringUUID + " or uuid = " + StringUUID;
+            boolean flag = false;
+            try{
+                if (UUID.fromString(StringUUID).toString().equals(StringUUID))
+                    flag = true;
+            }
+            catch (Exception E){
+
+            }
+            if(flag == true)
+                qString = "select * where name = " + StringUUID + " or uuid = " + StringUUID;
+            else
+                qString = "select * where name = '" + StringUUID  +"'";
             HashMap<String,Object> param = new HashMap<String, Object>();
             param.put("ql",qString);
             UsergridResponse response = client.apiRequest("GET",param,null,client.getOrgId(),client.getAppId(),type);
