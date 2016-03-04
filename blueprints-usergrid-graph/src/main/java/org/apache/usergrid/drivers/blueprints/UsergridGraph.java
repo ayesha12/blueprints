@@ -417,25 +417,11 @@ public class UsergridGraph implements Graph {
 
             }
 
-            boolean flag = false;
-            try{
-                if (UUID.fromString(StringUUID).toString().equals(StringUUID))
-                    flag = true;
-            }
-            catch (Exception E){
-
-            }
-            if(flag == true)
-                qString = "select * where name = " + StringUUID + " or uuid = " + StringUUID;
-            else
-                qString = "select * where name = '" + StringUUID  +"'";
-            HashMap<String,Object> param = new HashMap<String, Object>();
-            param.put("ql",qString);
-            UsergridResponse response = client.apiRequest("GET",param,null,client.getOrgId(),client.getAppId(),type);
-            if(response.first() == null)
+            UsergridResponse response = client.getEntity(type, StringUUID);
+            if(response.getError() != null)
                 return null;
             log.debug("DEBUG getVertex(): Api response returned for query vertex is : " + response);
-//            ValidateResponseErrors(response.first());
+            ValidateResponseErrors(response);
 
             UsergridVertex ugvertex = CreateVertexFromEntity(response.first());
 
@@ -473,8 +459,10 @@ public class UsergridGraph implements Graph {
 
         try {
             UsergridResponse response = client.deleteEntity(type, StringUUID);
+            if(response.getError() != null)
+                throw new IllegalStateException("Vertex you are trying to delete does not exist");
         }
-        catch(NotAuthorizedException e){
+        catch(Exception e){
             throw new IllegalStateException("Vertex you are trying to delete does not exist");
         }
 
