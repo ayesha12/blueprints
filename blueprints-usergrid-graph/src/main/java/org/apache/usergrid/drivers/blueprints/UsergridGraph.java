@@ -418,7 +418,7 @@ public class UsergridGraph implements Graph {
             }
 
             UsergridResponse response = client.getEntity(type, StringUUID);
-            if(response.getError() != null)
+            if(response.responseError.getError() != null)
                 return null;
             log.debug("DEBUG getVertex(): Api response returned for query vertex is : " + response);
             ValidateResponseErrors(response);
@@ -459,7 +459,7 @@ public class UsergridGraph implements Graph {
 
         try {
             UsergridResponse response = client.deleteEntity(type, StringUUID);
-            if(response.getError() != null)
+            if(response.responseError.getError() != null)
                 throw new IllegalStateException("Vertex you are trying to delete does not exist");
         }
         catch(Exception e){
@@ -623,7 +623,7 @@ public class UsergridGraph implements Graph {
 
             //Check if the edge is valid.
             UsergridResponse response = client.apiRequest(HTTP_GET, null, null, client.getOrgId(), client.getAppId(), id.toString());
-            if (response.getError() != null) {
+            if (response.responseError.getError() != null) {
 //                log.error("The get requested does not exists in the database.");
                 throw new RuntimeException("The Edge requested does not exists in the database. Quitting... ");
             }
@@ -776,12 +776,12 @@ public class UsergridGraph implements Graph {
     2. Close the connection to Usergrid.
     3. Error handling if closeConnection() failed.
     */
-        assertClientInitialized();
-        Iterable<Vertex> vertices = this.getVertices();
-        for (Vertex vertex : vertices){
-            this.removeVertex(vertex);
-        }
-        log.debug("DEBUG shutdown(): making the client null");
+//        assertClientInitialized();
+//        Iterable<Vertex> vertices = this.getVertices();
+//        for (Vertex vertex : vertices){
+//            this.removeVertex(vertex);
+//        }
+//        log.debug("DEBUG shutdown(): making the client null");
         client = null;
     }
 

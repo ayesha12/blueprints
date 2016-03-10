@@ -1,6 +1,7 @@
 package com.tinkerpop.blueprints.impls.usergrid;
 
 import com.tinkerpop.blueprints.*;
+import com.tinkerpop.blueprints.impls.GraphTest;
 
 
 import java.io.*;
@@ -8,7 +9,7 @@ import java.io.*;
 /**
  * Created by ApigeeCorporation on 6/29/15.
  */
-public class AppTest {
+public class AppTest  {
 
     static String filePath = "blueprints-usergrid-graph/src/main/resources/usergrid.properties";
     private static Iterable<Edge> Edges;
